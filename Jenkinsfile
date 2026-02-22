@@ -21,7 +21,7 @@ pipeline {
             }
         }
     }
-
+/// milad nazari
     post {
         success {
             echo 'Build completed successfully.'
