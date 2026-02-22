@@ -7,6 +7,17 @@
     <title>COMP367</title>
 </head>
 <body>
-    <h1>Welcome to COMP367</h1>
+   <%
+       java.time.LocalTime time = java.time.LocalTime.now();
+       String greeting;
+
+       if(time.getHour() < 12){
+           greeting = "Good morning, Milad, Welcome to COMP367";
+       } else {
+           greeting = "Good afternoon, Milad, Welcome to COMP367";
+       }
+   %>
+
+   <h1><%= greeting %></h1>
 </body>
 </html>
