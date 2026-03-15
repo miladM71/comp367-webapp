@@ -39,7 +39,7 @@ pipeline {
             }
         }
     }
-
+// milad
     post {
         success {
             echo 'Build completed successfully.'
@@ -49,3 +49,4 @@ pipeline {
         }
     }
 }
+//miladnazari23
