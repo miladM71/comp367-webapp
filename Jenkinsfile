@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "miladnazari23/comp367-webapp"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -9,19 +13,33 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Maven Project') {
             steps {
                 bat 'mvn clean package'
             }
         }
 
-        stage('Archive Artifact') {
+        stage('Docker Login') {
             steps {
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t %DOCKER_IMAGE%:latest .'
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                bat 'docker push %DOCKER_IMAGE%:latest'
             }
         }
     }
-/// milad nazari
+
     post {
         success {
             echo 'Build completed successfully.'
